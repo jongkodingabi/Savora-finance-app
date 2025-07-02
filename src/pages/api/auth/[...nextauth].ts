@@ -1,14 +1,30 @@
-import NextAuth from "next-auth";
+// pages/api/auth/[...nextauth].ts
 import GoogleProvider from "next-auth/providers/google";
 import { SupabaseAdapter } from "@next-auth/supabase-adapter";
-
+import NextAuth from "next-auth";
+import type { NextAuthOptions } from "next-auth";
+import type { Session, User } from "next-auth";
+// Extend Session and User types to include custom properties
 declare module "next-auth" {
   interface Session {
     accessToken?: string;
+    user: {
+      id: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    };
+  }
+  interface User {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
   }
 }
 
-export default NextAuth({
+// 🟦 Perlu supaya kita bisa pakai di server (API)
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_OAUTH_CLIENT_ID!,
@@ -24,46 +40,34 @@ export default NextAuth({
     }),
   ],
   adapter: SupabaseAdapter({
-    url: process.env.SUPABASE_URL!,
-    secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    secret: process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!,
   }),
-
   session: {
-    strategy: "jwt", // ← tambahkan ini!
+    strategy: "jwt",
   },
-
   callbacks: {
     async jwt({ token, account, profile, user }) {
       if (account && profile) {
         token.accessToken = account.access_token;
         token.name = profile.name;
       }
-      if (user && user.name) {
-        token.name = user.name;
-      }
-      // fallback: jika masih belum ada, ambil dari token.email
-      if (!token.name && token.email) {
-        token.name = token.email;
-      }
+      if (user?.name) token.name = user.name;
+      if (!token.name && token.email) token.name = token.email;
+      if (user) token.id = user.id;
       return token;
     },
     async session({ session, token }) {
       session.accessToken = token?.accessToken as string | undefined;
       if (session.user) {
+        session.user.id = token.id as string;
         session.user.name = session.user.name ?? session.user.email ?? "Guest";
       }
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // Hanya override jika url bukan external
-      if (url.startsWith(baseUrl)) {
-        return url;
-      }
-
-      // Jika logout (kembali ke "/")
+      if (url.startsWith(baseUrl)) return url;
       if (url === "/") return baseUrl + "/";
-
-      // Default ke dashboard
       return baseUrl + "/admin/dashboard";
     },
   },
@@ -72,4 +76,7 @@ export default NextAuth({
     signIn: "/auth/login",
     signOut: "/",
   },
-});
+};
+
+// 🟩 NextAuth handler
+export default NextAuth(authOptions);

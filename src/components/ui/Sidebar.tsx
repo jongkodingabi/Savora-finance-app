@@ -8,16 +8,23 @@ import {
   HelpCircle,
   LogOut,
   Home,
+  Banknote,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
-import { Wallet } from "lucide-react";
+import { Wallet, Menu } from "lucide-react";
+import { useState } from "react";
 
 const navigation = [
-  { name: "Overview", href: "#", icon: Home, current: true },
-  { name: "Opportunities", href: "#", icon: Target, current: false },
-  { name: "My companies", href: "#", icon: Building2, current: false },
-  { name: "Brain", href: "#", icon: Brain, current: false },
-  { name: "Smart", href: "#", icon: Zap, current: false },
+  { name: "Overview", link: "/admin/dashboard", icon: Home, current: true },
+  {
+    name: "Transaction",
+    link: "/admin/transaction",
+    icon: Banknote,
+    current: false,
+  },
+  { name: "My companies", link: "#", icon: Building2, current: false },
+  { name: "Brain", link: "#", icon: Brain, current: false },
+  { name: "Smart", link: "#", icon: Zap, current: false },
 ];
 
 const bottomNavigation = [
@@ -27,71 +34,115 @@ const bottomNavigation = [
 ];
 
 export default function Sidebar() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <div className="flex min-h-screen w-64 flex-col bg-gray-950 border-r border-gray-800 text-white">
-      {/* Logo */}
-      <div className="flex items-center gap-2 px-6 py-4">
-        <div className="w-8 h-8 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-lg flex items-center justify-center">
-          <Wallet className="w-5 h-5 text-slate-900" />
+    <>
+      {/* Hamburger for mobile */}
+      <button
+        className="md:hidden fixed top-4 left-4 z-50 bg-gray-950 p-2 rounded-lg border border-gray-800"
+        onClick={() => setOpen(true)}
+        aria-label="Open sidebar"
+      >
+        <Menu className="w-6 h-6 text-white" />
+      </button>
+
+      {/* Overlay */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          onClick={() => setOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div
+        className={`
+          fixed z-50 top-0 left-0 min-h-screen w-64 bg-gray-950 border-r border-gray-800 text-white flex flex-col
+          transition-transform duration-300
+          ${open ? "translate-x-0" : "-translate-x-full"}
+          md:translate-x-0 md:flex md:min-h-screen
+        `}
+      >
+        {/* Close button on mobile */}
+        <div className="md:hidden flex justify-end p-4">
+          <button
+            onClick={() => setOpen(false)}
+            aria-label="Close sidebar"
+            className="text-gray-400 hover:text-white"
+          >
+            ×
+          </button>
         </div>
-        <span className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-          Savora
-        </span>
-      </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 px-4 py-4">
-        <ul className="space-y-2">
-          {navigation.map((item) => (
-            <li key={item.name}>
-              <Link
-                href={item.href}
-                className={`flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                  item.current
-                    ? "bg-gray-800 text-white"
-                    : "text-gray-300 hover:bg-gray-800 hover:text-white"
-                }`}
-              >
-                <item.icon className="h-5 w-5" />
-                <span>{item.name}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+        {/* Logo */}
+        <div className="flex items-center gap-2 px-6 py-4">
+          <div className="w-8 h-8 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-lg flex items-center justify-center">
+            <Wallet className="w-5 h-5 text-slate-900" />
+          </div>
+          <span className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+            Savora
+          </span>
+        </div>
 
-      {/* Bottom Navigation */}
-      <div className="px-4 py-4">
-        <ul className="space-y-2">
-          {bottomNavigation.map((item) => (
-            <li key={item.name}>
-              {item.name === "Logout" ? (
-                <button
-                  type="button"
-                  onClick={() =>
-                    signOut({
-                      callbackUrl: "/", // arahkan ulang ke root
-                      redirect: true, // (opsional) pastikan redirect dilakukan
-                    })
-                  }
-                  className="w-full flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-300 transition-colors hover:bg-gray-800 hover:text-white"
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span>{item.name}</span>
-                </button>
-              ) : (
+        {/* Navigation */}
+        <nav className="flex-1 px-4 py-4">
+          <ul className="space-y-2">
+            {navigation.map((item) => (
+              <li key={item.name}>
                 <Link
-                  href={item.href}
-                  className="flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-300 transition-colors hover:bg-gray-800 hover:text-white"
+                  href={item.link}
+                  className={`flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                    item.current
+                      ? "bg-gray-800 text-white"
+                      : "text-gray-300 hover:bg-gray-800 hover:text-white"
+                  }`}
+                  onClick={() => setOpen(false)}
                 >
                   <item.icon className="h-5 w-5" />
                   <span>{item.name}</span>
                 </Link>
-              )}
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* Bottom Navigation */}
+        <div className="px-4 py-4">
+          <ul className="space-y-2">
+            {bottomNavigation.map((item) => (
+              <li key={item.name}>
+                {item.name === "Logout" ? (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      signOut({
+                        callbackUrl: "/",
+                        redirect: true,
+                      })
+                    }
+                    className="w-full flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-300 transition-colors hover:bg-gray-800 hover:text-white"
+                  >
+                    <item.icon className="h-5 w-5" />
+                    <span>{item.name}</span>
+                  </button>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className="flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-300 transition-colors hover:bg-gray-800 hover:text-white"
+                    onClick={() => setOpen(false)}
+                  >
+                    <item.icon className="h-5 w-5" />
+                    <span>{item.name}</span>
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
+      {/* Spacer for sidebar on desktop */}
+      <div className="hidden md:block w-64 flex-shrink-0" />
+    </>
   );
 }
