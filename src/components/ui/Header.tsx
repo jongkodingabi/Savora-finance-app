@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function Header() {
   const { data: session }: any = useSession();
   return (
-    <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mt-14 md:mt-4 bg-gray-950 px-4 py-3 md:px-6 md:py-4">
+    <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mt-14 md:mt-4 px-4 py-3 md:px-6 md:py-4">
       <div className="flex items-center space-x-3 md:space-x-4">
         <h1 className="text-lg md:text-xl font-semibold text-white">
           Finance Overview

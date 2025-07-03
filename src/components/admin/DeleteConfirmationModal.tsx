@@ -25,7 +25,7 @@ export default function DeleteConfirmationModal({
         exit={{ opacity: 0 }}
       >
         <motion.div
-          className="bg-gray-900 text-white rounded-xl shadow-2xl p-8 w-full max-w-md"
+          className="bg-gray-900 text-white rounded-xl shadow-2xl p-8 w-full max-w-md border border-gray-800"
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.95, opacity: 0 }}

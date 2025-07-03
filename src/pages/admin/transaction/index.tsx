@@ -12,6 +12,7 @@ import {
   Eye,
   Edit,
   Trash2,
+  BanknoteIcon,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -134,7 +135,7 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-blue-100 text-sm font-medium">
-                      Total Revenue
+                      Total Amount
                     </p>
                     <p className="text-3xl font-bold mt-2">
                       {totalAmount.toLocaleString()}
@@ -173,7 +174,7 @@ export default function DashboardPage() {
                     </p>
                   </div>
                   <div className="bg-purple-500/30 p-3 rounded-lg">
-                    <Users className="w-8 h-8" />
+                    <BanknoteIcon className="w-8 h-8" />
                   </div>
                 </div>
                 <div className="mt-4 bg-purple-500/30 px-4 py-2 rounded-lg text-sm font-medium">
