@@ -162,7 +162,7 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-purple-100 text-sm font-medium">
-                      Total Users
+                      Total Transaction
                     </p>
                     <p className="text-3xl font-bold mt-2">
                       {tableData.length.toLocaleString()}
@@ -211,20 +211,21 @@ export default function DashboardPage() {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div>
                     <h2 className="text-xl font-semibold text-white">
-                      User Management
+                      Transactions
                     </h2>
                     <p className="text-gray-400 text-sm mt-1">
-                      Manage your users and their permissions
+                      Create and manage your transactions
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
                     <input
                       type="text"
-                      placeholder="Search users..."
+                      placeholder="Search transaction..."
                       className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                     <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white font-medium transition-colors duration-200">
-                      Add User
+                      Add Transaction
+                      <Pen className="w-4 h-4 inline-block ml-1" />
                     </button>
                   </div>
                 </div>

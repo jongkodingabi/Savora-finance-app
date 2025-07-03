@@ -22,7 +22,12 @@ const navigation = [
     icon: Banknote,
     current: false,
   },
-  { name: "My companies", link: "#", icon: Building2, current: false },
+  {
+    name: "Categories",
+    link: "/admin/categories",
+    icon: Target,
+    current: false,
+  },
   { name: "Brain", link: "#", icon: Brain, current: false },
   { name: "Smart", link: "#", icon: Zap, current: false },
 ];
