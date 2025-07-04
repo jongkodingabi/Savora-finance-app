@@ -4,6 +4,7 @@ import Head from "next/head";
 import Sidebar from "../../../components/ui/Sidebar";
 import Header from "../../../components/ui/Header";
 import DeleteModalConfirmation from "@/components/admin/DeleteConfirmationModal";
+import CreateModalOpen from "@/components/admin/CreateModalOpen";
 import {
   Plus,
   Trash2,
@@ -13,7 +14,6 @@ import {
   Download,
   Upload,
 } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
@@ -34,6 +34,9 @@ export default function CategoriesPage() {
   const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(
     null
   );
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [type, setType] = useState("expense");
 
   const incomeCount = categories.filter((c) => c.type === "income").length;
   const expenseCount = categories.filter((c) => c.type === "expense").length;
@@ -94,6 +97,30 @@ export default function CategoriesPage() {
   useEffect(() => {
     fetchCategories();
   }, [session?.user?.id]);
+
+  // handle create category
+  const handleSubmit = async (name: string, type: string) => {
+    if (!session?.user?.id) {
+      alert("User belum login.");
+      return;
+    }
+
+    const response = await fetch("/api/categories", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, type }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      console.error("Insert error:", error);
+      alert("Gagal menambahkan kategori");
+    } else {
+      setCreateModalOpen(false);
+      fetchCategories(); // Refresh categories after adding
+      toast.success("Successfully added category");
+    }
+  };
 
   //   handle delete category
   const handleDeleteCategory = async (category: Category) => {
@@ -232,13 +259,13 @@ export default function CategoriesPage() {
                       <option value="income">Income</option>
                       <option value="transfer">Transfer</option>
                     </select>
-                    <Link
-                      href="/admin/categories/add"
+                    <button
+                      onClick={() => setCreateModalOpen(true)}
                       className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white font-medium transition-colors duration-200 flex items-center gap-2"
                     >
                       <Plus className="w-4 h-4" />
                       Add Category
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -376,6 +403,13 @@ export default function CategoriesPage() {
         onConfirm={confirmDelete}
         itemName={categoryToDelete?.name || ""}
       />
+      {createModalOpen && (
+        <CreateModalOpen
+          // handleSubmit={handleSubmit}
+          handleSubmit={handleSubmit}
+          isClose={() => setCreateModalOpen(false)}
+        />
+      )}
     </>
   );
 }
