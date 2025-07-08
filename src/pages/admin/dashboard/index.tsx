@@ -16,6 +16,111 @@ export default function DashboardPage() {
   const [wallets, setWallets] = useState<any[]>([]);
   const { data: session, status } = useSession();
   const hasShownWelcome = useRef(false);
+  const [totalTransactions, setTotalTransactions] = useState(0);
+  const [totalCategories, setTotalCategories] = useState(0);
+  const [totalGoals, setTotalGoals] = useState(0);
+  const [chartData, setChartData] = useState<any[]>([]);
+
+  const fetchTransactionChartData = async () => {
+    try {
+      const res = await fetch("/api/transaction");
+      const result = await res.json();
+
+      if (res.ok) {
+        const transactions = result.data;
+
+        // Group transaksi berdasarkan tanggal
+        const grouped = transactions.reduce((acc: any, trx: any) => {
+          const date = new Date(trx.date).toISOString().split("T")[0];
+          if (!acc[date]) acc[date] = 0;
+          acc[date] += parseFloat(trx.amount);
+          return acc;
+        }, {});
+
+        // Ubah ke format untuk chart: array of { date, total }
+        const formatted = Object.entries(grouped).map(([date, total]) => ({
+          date,
+          total,
+        }));
+
+        // Optional: urutkan berdasarkan tanggal
+        formatted.sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+        );
+
+        setChartData(formatted);
+      } else {
+        toast.error("Gagal memuat data chart transaksi");
+      }
+    } catch (err) {
+      console.error("Chart error:", err);
+      toast.error("Gagal memuat chart transaksi");
+    }
+  };
+
+  const fetchTotalTransactions = async () => {
+    try {
+      const response = await fetch("/api/transaction", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setTotalTransactions(data.data.length);
+      }
+    } catch (error) {
+      console.error("Error fetching total transactions:", error);
+      toast.error("Failed to fetch total transactions");
+    }
+  };
+
+  const fetchTotalGoals = async () => {
+    try {
+      const response = await fetch("/api/goals", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setTotalGoals(data.data.length);
+      }
+    } catch (error) {
+      console.error("Error fetching total goals:", error);
+      toast.error("Failed to fetch total goals");
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch("/api/categories", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setTotalCategories(data.data.length);
+        console.log("Categories fetched:", data);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      toast.error("Failed to fetch categories");
+    }
+  };
+
+  useEffect(() => {
+    if (session?.user?.id) {
+      fetchTotalTransactions();
+      fetchCategories();
+      fetchTotalGoals();
+      fetchTransactionChartData();
+    }
+  }, [session?.user?.id]);
 
   // Notif login
   useEffect(() => {
@@ -53,7 +158,9 @@ export default function DashboardPage() {
       alert(`Insert error: ${result.error}`);
     } else {
       // alert("Uang berhasil disimpan ke database!");
-
+      await fetch("/api/update-status", {
+        method: "POST", // supaya lebih aman (tidak bisa diakses sembarang)
+      });
       toast.success("Succcessfully saving amount");
 
       fetchWallets(); // Fetch data again after successful insert
@@ -120,20 +227,20 @@ export default function DashboardPage() {
                 </StatsCard>
                 <StatsCard
                   className="bg-gradient-to-tr from-pink-500 via-red-400 to-yellow-300 shadow-lg"
-                  title="Revenue"
-                  value="326.6 K"
+                  title="Total Transactions"
+                  value={totalTransactions.toLocaleString()}
                   change="+ 2 %"
                   isPositive
                 />
                 <StatsCard
                   className="bg-gradient-to-tr from-blue-600 via-cyan-400 to-teal-300 shadow-lg"
-                  title="Pageviews / visit"
-                  value="4.20"
+                  title="Total Categories"
+                  value={totalCategories.toLocaleString()}
                 />
                 <StatsCard
                   className="bg-gradient-to-tr from-emerald-500 via-green-400 to-lime-300 shadow-lg"
-                  title="Avg. Time"
-                  value="00:03:27"
+                  title="Total Goals"
+                  value={totalGoals.toLocaleString()}
                 />
               </div>
             </section>
@@ -144,7 +251,7 @@ export default function DashboardPage() {
                 <h2 className="text-xl font-semibold text-white mb-4">
                   Financial Overview
                 </h2>
-                <LineChart />
+                <LineChart data={chartData} />
               </div>
               <div className="flex flex-col gap-6">
                 <CircularProgress

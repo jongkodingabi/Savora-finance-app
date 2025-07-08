@@ -42,7 +42,7 @@ const CreateModalOpen = ({ isClose, handleSubmit }: CreateModalProps) => {
               ✕
             </button>
             <h2 className="text-2xl font-bold text-white mb-6 text-center tracking-wide">
-              Tambah Kategori
+              Add Category
             </h2>
             <form
               onSubmit={(e) => {
@@ -55,7 +55,7 @@ const CreateModalOpen = ({ isClose, handleSubmit }: CreateModalProps) => {
             >
               <div>
                 <label className="text-sm text-gray-300 block mb-2 font-medium">
-                  Nama Kategori
+                  Category Name
                 </label>
                 <input
                   type="text"
@@ -68,7 +68,7 @@ const CreateModalOpen = ({ isClose, handleSubmit }: CreateModalProps) => {
               </div>
               <div>
                 <label className="text-sm text-gray-300 block mb-2 font-medium">
-                  Tipe
+                  Type
                 </label>
                 <select
                   value={type}
@@ -86,13 +86,13 @@ const CreateModalOpen = ({ isClose, handleSubmit }: CreateModalProps) => {
                   onClick={isClose}
                   className="px-4 py-2 rounded-lg bg-gray-700 text-gray-300 hover:bg-gray-600 transition"
                 >
-                  Batal
+                  Cancel
                 </button>
                 <button
                   type="submit"
                   className="bg-blue-600 hover:bg-blue-700 px-5 py-2 text-white rounded-lg font-semibold shadow transition"
                 >
-                  Simpan
+                  Save
                 </button>
               </div>
             </form>

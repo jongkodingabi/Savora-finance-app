@@ -29,9 +29,9 @@ export default function Header() {
           <button className="rounded-lg border border-gray-600 px-3 py-2 text-xs md:text-sm font-medium text-gray-300 hover:bg-gray-700">
             Insights
           </button>
-          <button className="rounded-lg border border-gray-600 px-3 py-2 text-xs md:text-sm font-medium text-gray-300 hover:bg-gray-700">
+          {/* <button className="rounded-lg border border-gray-600 px-3 py-2 text-xs md:text-sm font-medium text-gray-300 hover:bg-gray-700">
             Schedule
-          </button>
+          </button> */}
         </div>
         <div className="flex items-center space-x-2 md:space-x-3 mt-2 md:mt-0">
           <Bell className="h-5 w-5 text-gray-400" />

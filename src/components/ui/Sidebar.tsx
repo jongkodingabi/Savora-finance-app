@@ -9,6 +9,7 @@ import {
   LogOut,
   Home,
   Banknote,
+  Folder,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { Wallet, Menu } from "lucide-react";
@@ -25,11 +26,11 @@ const navigation = [
   {
     name: "Categories",
     link: "/admin/categories",
-    icon: Target,
+    icon: Folder,
     current: false,
   },
-  { name: "Brain", link: "#", icon: Brain, current: false },
-  { name: "Smart", link: "#", icon: Zap, current: false },
+  { name: "Goals", link: "/admin/goals", icon: Target, current: false },
+  // { name: "Smart", link: "#", icon: Zap, current: false },
 ];
 
 const bottomNavigation = [
