@@ -284,7 +284,7 @@ export default function DashboardPage() {
                     </p>
                     <p className="text-blue-200 text-sm mt-1 flex items-center">
                       <TrendingUp className="w-4 h-4 mr-1" />
-                      +12.5% from last month
+                      Update when you add a new transaction
                     </p>
                   </div>
                   <div className="bg-blue-500/30 p-3 rounded-lg">
@@ -310,7 +310,7 @@ export default function DashboardPage() {
                     <p className="text-3xl font-bold mt-2">{countCategory}</p>
                     <p className="text-purple-200 text-sm mt-1 flex items-center">
                       <TrendingUp className="w-4 h-4 mr-1" />
-                      +8.2% from last month
+                      Accross all Categories
                     </p>
                   </div>
                   <div className="bg-purple-500/30 p-3 rounded-lg">
@@ -335,7 +335,7 @@ export default function DashboardPage() {
                     </p>
                     <p className="text-emerald-200 text-sm mt-1 flex items-center">
                       <TrendingUp className="w-4 h-4 mr-1" />
-                      +3.1% from last month
+                      Accross all type transanction
                     </p>
                   </div>
                   <div className="bg-emerald-500/30 p-3 rounded-lg">

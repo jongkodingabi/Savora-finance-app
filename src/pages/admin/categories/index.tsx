@@ -188,7 +188,7 @@ export default function CategoriesPage() {
                   </span>
                   <span className="flex items-center gap-1 text-blue-100 text-sm">
                     <TrendingUp className="w-4 h-4" />
-                    <span>+5 new this month</span>
+                    <span>Updated Every Time</span>
                   </span>
                 </div>
               </div>

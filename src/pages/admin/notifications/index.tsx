@@ -7,12 +7,26 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { Bell, ChevronDown } from "lucide-react";
+import ShareButtons from "@/components/ui/ShareButton";
 
 export default function DashboardPage() {
   const [notifications, setNotifications] = useState<any[]>([]);
   const [totalNotification, setTotalNotification] = useState<any[]>([]);
   const unReadCount = notifications.filter((note) => !note.read).length;
   const { data: session }: any = useSession();
+  const [wallets, setTotalWallets] = useState<any[]>([]);
+
+  const fetchTotalAmount = async () => {
+    const res = await fetch("/api/wallets");
+    const data = await res.json();
+    if (res.ok) {
+      setTotalWallets(data.data);
+    } else {
+      console.error(data.error || "Failed to fetch total amount");
+    }
+  };
+
+  const totalAmount = wallets?.[0]?.amount ?? 0;
 
   const fetchNotifications = async () => {
     const res = await fetch("/api/notification");
@@ -46,6 +60,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     fetchNotifications();
+    fetchTotalAmount();
   }, []);
 
   //   const fetchNotifications = async () => {
@@ -60,7 +75,7 @@ export default function DashboardPage() {
   return (
     <>
       <Head>
-        <title>Dashboard</title>
+        <title>Notifications - Dashboard</title>
       </Head>
 
       <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-900 via-gray-950 to-gray-800 md:flex-row">
@@ -80,21 +95,11 @@ export default function DashboardPage() {
                 <div className="h-3 w-3 md:h-4 md:w-4 rounded-full bg-blue-500 animate-pulse"></div>
               </div>
             </div>
-            <div className="font-semibold">
-              Welcome Back, {session?.user?.name} 👋
-            </div>
 
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:space-x-4">
               <div className="flex gap-2 md:gap-4">
-                <button className="rounded-lg bg-gradient-to-r from-emerald-400 to-cyan-400 px-3 py-2 text-xs md:text-sm font-medium text-white hover:bg-purple-700">
-                  Share
-                </button>
-                <button className="rounded-lg border border-gray-600 px-3 py-2 text-xs md:text-sm font-medium text-gray-300 hover:bg-gray-700">
-                  Print
-                </button>
-                <button className="rounded-lg border border-gray-600 px-3 py-2 text-xs md:text-sm font-medium text-gray-300 hover:bg-gray-700">
-                  Insights
-                </button>
+                <ShareButtons amount={totalAmount} />
+
                 {/* <button className="rounded-lg border border-gray-600 px-3 py-2 text-xs md:text-sm font-medium text-gray-300 hover:bg-gray-700">
               Schedule
             </button> */}

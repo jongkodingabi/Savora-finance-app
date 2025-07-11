@@ -129,23 +129,23 @@ export default function DashboardPage() {
   }, [session?.user?.id]);
 
   // Notif login
-  useEffect(() => {
-    if (
-      status === "authenticated" &&
-      session?.user?.id &&
-      !hasShownWelcome.current
-    ) {
-      toast.success("Welcome to your dashboard!", {
-        duration: 3000,
-        position: "top-right",
-        style: {
-          background: "#1e293b",
-          color: "#f3f4f6",
-        },
-      });
-      hasShownWelcome.current = true;
-    }
-  }, [status, session?.user?.id]);
+  // useEffect(() => {
+  //   if (
+  //     status === "authenticated" &&
+  //     session?.user?.id &&
+  //     !hasShownWelcome.current
+  //   ) {
+  //     toast.success("Welcome to your dashboard!", {
+  //       duration: 3000,
+  //       position: "top-right",
+  //       style: {
+  //         background: "#1e293b",
+  //         color: "#f3f4f6",
+  //       },
+  //     });
+  //     hasShownWelcome.current = true;
+  //   }
+  // }, [status, session?.user?.id]);
 
   // handle save money
   const handleSaveMoney = async (value: number) => {

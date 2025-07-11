@@ -47,19 +47,13 @@ export default function Header() {
           <div className="h-3 w-3 md:h-4 md:w-4 rounded-full bg-blue-500 animate-pulse"></div>
         </div>
       </div>
-      <div className="font-semibold">
+      {/* <div className="font-semibold">
         Welcome Back, {session?.user?.name} 👋
-      </div>
+      </div> */}
 
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:space-x-4">
         <div className="flex gap-2 md:gap-4">
           <ShareButton amount={totalAmount} />
-          <button className="rounded-lg border border-gray-600 px-3 py-2 text-xs md:text-sm font-medium text-gray-300 hover:bg-gray-700">
-            Print
-          </button>
-          <button className="rounded-lg border border-gray-600 px-3 py-2 text-xs md:text-sm font-medium text-gray-300 hover:bg-gray-700">
-            Insights
-          </button>
           {/* <button className="rounded-lg border border-gray-600 px-3 py-2 text-xs md:text-sm font-medium text-gray-300 hover:bg-gray-700">
             Schedule
           </button> */}

@@ -205,7 +205,7 @@ export default function CreateTransactionForm() {
                       >
                         <option value="income">💰 Income</option>
                         <option value="expense">💸 Expense</option>
-                        <option value="transfer">🔄 Transfer</option>
+                        {/* <option value="transfer">🔄 Transfer</option> */}
                       </select>
                     </div>
                   </div>

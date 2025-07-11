@@ -34,8 +34,8 @@ const navigation = [
 ];
 
 const bottomNavigation = [
-  { name: "Settings", href: "#", icon: Settings },
-  { name: "Help", href: "#", icon: HelpCircle },
+  // { name: "Settings", href: "#", icon: Settings },
+  // { name: "Help", href: "#", icon: HelpCircle },
   { name: "Logout", href: "#", icon: LogOut, onClick: () => signOut() },
 ];
 
