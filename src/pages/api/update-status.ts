@@ -19,7 +19,7 @@ export default async function handler(
 
   const userId = session.user.id;
 
-  //   Ambil total wallet user
+  // Ambil total wallet user
   const { data: wallets, error: walletError } = await supabase
     .from("wallets")
     .select("amount")
@@ -35,14 +35,14 @@ export default async function handler(
   // Ambil semua goals user yang status-nya masih ongoing
   const { data: goals, error: goalsError } = await supabase
     .from("goals")
-    .select("id, amount")
+    .select("id, amount, title, type, emoji, description")
     .eq("user_id", userId)
     .eq("status", "ongoing");
 
   if (goalsError) {
     return res.status(500).json({ error: goalsError.message });
   }
-  if (!goals) {
+  if (!goals || goals.length === 0) {
     return res.status(404).json({ error: "Goal not found" });
   }
 
@@ -51,7 +51,7 @@ export default async function handler(
   );
 
   for (const goal of goalsToComplete) {
-    // Update goal status to 'completed'
+    // 1. Update status goal jadi 'completed'
     const { error: updateError } = await supabase
       .from("goals")
       .update({ status: "completed" })
@@ -62,14 +62,24 @@ export default async function handler(
       return res.status(500).json({ error: updateError.message });
     }
 
-    // Optionally, you can also delete the goal if needed
-    // const { error: deleteError } = await supabase
-    //   .from("goals")
-    //   .delete()
-    //   .eq("id", goal.id)
-    //   .eq("user_id", userId);
-    // if (deleteError) {
-    //   return res.status(500).json({ error: deleteError.message });
-    // }
+    // 2. Tambahkan notifikasi
+    const { error: notificationError } = await supabase
+      .from("notifications")
+      .insert({
+        user_id: userId,
+        title: `🎉 Goal "${goal.title}" completed!`,
+        description: `Type goal ${goal.type} successfully reached.`,
+        type: "goal_completed",
+        emoji: goal.emoji || "✅",
+        read: false,
+      });
+
+    if (notificationError) {
+      return res.status(500).json({ error: notificationError.message });
+    }
   }
+
+  return res
+    .status(200)
+    .json({ message: "Goals updated and notifications sent." });
 }
