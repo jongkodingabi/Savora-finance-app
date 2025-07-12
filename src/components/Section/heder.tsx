@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Wallet, Menu } from "lucide-react";
+import { Wallet } from "lucide-react";
 import { signIn, useSession } from "next-auth/react";
 
 const HeaderNavigation = () => {
@@ -32,9 +32,6 @@ const HeaderNavigation = () => {
               Sign In
             </Button>
           )}
-          <Button variant="ghost" size="icon" className="md:hidden">
-            <Menu className="w-5 h-5" />
-          </Button>
         </div>
       </div>
     </header>

@@ -51,7 +51,7 @@ const HeroSection = () => {
             </div>
             <div className="flex items-center">
               <CheckCircle className="w-4 h-4 text-emerald-400 mr-2" />
-              Setup in 2 minutes
+              Quick Setup
             </div>
           </div>
         </div>
