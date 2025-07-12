@@ -10,7 +10,7 @@ interface ShareButtonsProps {
 
 export default function ShareButtons({
   amount,
-  url = "https://yourapp.com",
+  url = "https://savora-finance-app.vercel.app",
 }: ShareButtonsProps) {
   const [whatsappUrl, setWhatsappUrl] = useState("#");
 
