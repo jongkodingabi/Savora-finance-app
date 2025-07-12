@@ -3,6 +3,7 @@ import { Target, LogOut, Home, Banknote, Folder } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { Wallet, Menu } from "lucide-react";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 const navigation = [
   { name: "Overview", link: "/admin/dashboard", icon: Home, current: true },
@@ -30,6 +31,8 @@ const bottomNavigation = [
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
+
+  const pathname = usePathname();
 
   return (
     <>
@@ -83,22 +86,26 @@ export default function Sidebar() {
         {/* Navigation */}
         <nav className="flex-1 px-4 py-4">
           <ul className="space-y-2">
-            {navigation.map((item) => (
-              <li key={item.name}>
-                <Link
-                  href={item.link}
-                  className={`flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                    item.current
-                      ? "bg-gray-800 text-white"
-                      : "text-gray-300 hover:bg-gray-800 hover:text-white"
-                  }`}
-                  onClick={() => setOpen(false)}
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span>{item.name}</span>
-                </Link>
-              </li>
-            ))}
+            {navigation.map((item) => {
+              const isActive = pathname === item.link;
+
+              return (
+                <li key={item.name}>
+                  <Link
+                    href={item.link}
+                    className={`flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                      isActive
+                        ? "bg-gray-800 text-white"
+                        : "text-gray-300 hover:bg-gray-800 hover:text-white"
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    <item.icon className="h-5 w-5" />
+                    <span>{item.name}</span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
