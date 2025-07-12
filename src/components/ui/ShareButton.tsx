@@ -1,12 +1,11 @@
 "use client";
 
-import { MessageCircleMore } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
 interface ShareButtonsProps {
   url?: string;
-  amount: any;
+  amount: number;
 }
 
 export default function ShareButtons({

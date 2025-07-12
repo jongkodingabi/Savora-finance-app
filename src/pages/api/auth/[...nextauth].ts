@@ -3,7 +3,6 @@ import GoogleProvider from "next-auth/providers/google";
 import { SupabaseAdapter } from "@next-auth/supabase-adapter";
 import NextAuth from "next-auth";
 import type { NextAuthOptions } from "next-auth";
-import type { Session, User } from "next-auth";
 // Extend Session and User types to include custom properties
 declare module "next-auth" {
   interface Session {

@@ -10,16 +10,13 @@ import {
   Clock,
   Plus,
   Eye,
-  Edit,
   Trash2,
-  Calendar,
   DollarSign,
   Trophy,
   AlertCircle,
   Star,
   Zap,
   ArrowRight,
-  MoreVertical,
   Filter,
   Search,
   Sparkles,
@@ -43,17 +40,25 @@ type Goal = {
   amount: number;
   status: string;
   percentage: number;
+  currentAmount?: number;
+  priority?: string;
+  targetAmount?: number;
+};
+
+type Wallet = {
+  id: string;
+  name: string;
+  amount: number;
 };
 
 export default function ModernGoalsPage() {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [statusFilter, setStatusFilter] = useState<string>("All");
-  const [viewMode, setViewMode] = useState<string>("grid"); // grid, kanban, timeline
-  const [selectedGoal, setSelectedGoal] = useState<any>(null);
+  const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState<boolean>(false);
-  const [wallets, setWallets] = useState<any[]>([]); // Assuming wallets is an array of objects
-  const [modalDeleteGoal, setModalDeleteGoal] = useState<any>(false);
+  const [wallets, setWallets] = useState<Wallet[]>([]); // Assuming wallets is an array of objects
+  const [modalDeleteGoal, setModalDeleteGoal] = useState<boolean>(false);
   const [goalToDelete, setGoalToDelete] = useState<Goal | null>(null);
 
   const fetchWallets = async () => {
@@ -602,10 +607,11 @@ export default function ModernGoalsPage() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-400">
-                    Current: {selectedGoal.currentAmount.toLocaleString()}
+                    Current:{" "}
+                    {selectedGoal.currentAmount?.toLocaleString() ?? "0"}
                   </span>
                   <span className="text-gray-400">
-                    Target: {selectedGoal.targetAmount.toLocaleString()}
+                    Target: {selectedGoal.targetAmount?.toLocaleString() ?? "0"}
                   </span>
                 </div>
               </div>

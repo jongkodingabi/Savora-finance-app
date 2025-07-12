@@ -35,8 +35,6 @@ export default function CategoriesPage() {
     null
   );
   const [createModalOpen, setCreateModalOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [type, setType] = useState("expense");
 
   const incomeCount = categories.filter((c) => c.type === "income").length;
   const expenseCount = categories.filter((c) => c.type === "expense").length;

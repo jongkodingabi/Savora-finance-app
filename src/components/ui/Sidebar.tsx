@@ -1,16 +1,5 @@
 import Link from "next/link";
-import {
-  Target,
-  Building2,
-  Brain,
-  Zap,
-  Settings,
-  HelpCircle,
-  LogOut,
-  Home,
-  Banknote,
-  Folder,
-} from "lucide-react";
+import { Target, LogOut, Home, Banknote, Folder } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { Wallet, Menu } from "lucide-react";
 import { useState } from "react";

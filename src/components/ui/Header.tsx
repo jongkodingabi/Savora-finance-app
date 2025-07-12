@@ -5,10 +5,23 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import ShareButton from "./ShareButton";
 
+interface Notification {
+  id: string;
+  message: string;
+  read: boolean;
+  createdAt: string;
+}
+
+interface Wallet {
+  id: string;
+  userId: number;
+  amount: number;
+}
+
 export default function Header() {
-  const { data: session }: any = useSession();
-  const [notifications, setNotifications] = useState<any[]>([]);
-  const [wallets, setTotalWallets] = useState<any[]>([]);
+  const { data: session } = useSession();
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [wallets, setTotalWallets] = useState<Wallet[]>([]);
 
   const fetchTotalAmount = async () => {
     const res = await fetch("/api/wallets");

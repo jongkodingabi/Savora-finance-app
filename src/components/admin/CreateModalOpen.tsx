@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { Plus } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { on } from "events";
 
 type CreateModalProps = {
   isClose: () => void;
@@ -11,12 +9,6 @@ type CreateModalProps = {
 const CreateModalOpen = ({ isClose, handleSubmit }: CreateModalProps) => {
   const [name, setName] = useState("");
   const [type, setType] = useState("expense");
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setName("");
-    setType("expense");
-  };
 
   return (
     <>

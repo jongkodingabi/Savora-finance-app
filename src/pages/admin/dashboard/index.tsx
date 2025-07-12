@@ -3,26 +3,44 @@ import Sidebar from "../../../components/ui/Sidebar";
 import Header from "../../../components/ui/Header";
 import LineChart from "../../../components/ui/LineChart";
 import StatsCard from "../../../components/ui/StatsCard";
-import CircularProgress from "../../../components/ui/CircularProgress";
 import { Pen } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import MoneyInputModal from "@/components/admin/MoneyInputModal";
 import { toast, Toaster } from "react-hot-toast";
 
+type Wallet = { amount: string; value?: string };
+type Transaction = {
+  id: string;
+  category_id: { name: string };
+  note: string;
+  amount: number;
+  type: "income" | "expense";
+  date: string;
+};
+type Goal = {
+  id: string;
+  emoji: string;
+  title: string;
+  description: string;
+  targetAmount: number;
+  currentAmount: number;
+  percentage: number;
+  status: "completed" | "in-progress";
+  priority: "low" | "medium" | "high";
+};
+type ChartPoint = { date: string; total: number };
+
 export default function DashboardPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [money, setMoney] = useState<number | null>(null);
-  const [wallets, setWallets] = useState<any[]>([]);
-  const { data: session, status } = useSession();
-  const hasShownWelcome = useRef(false);
+  const [wallets, setWallets] = useState<Wallet[]>([]);
+  const { data: session } = useSession();
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [totalCategories, setTotalCategories] = useState(0);
-  const [transactions, setTransactions] = useState<any[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [totalGoals, setTotalGoals] = useState(0);
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
-  const [goals, setGoals] = useState<any[]>([]);
+  const [chartData, setChartData] = useState<ChartPoint[]>([]);
+  const [goals, setGoals] = useState<Goal[]>([]);
 
   const fetchTransactionChartData = async () => {
     try {
@@ -33,20 +51,24 @@ export default function DashboardPage() {
         const transactions = result.data;
 
         // Group transaksi berdasarkan tanggal
-        const grouped = transactions.reduce((acc: any, trx: any) => {
-          const date = new Date(trx.date).toISOString().split("T")[0];
-          if (!acc[date]) acc[date] = 0;
-          acc[date] += parseFloat(trx.amount);
-          return acc;
-        }, {});
+        const grouped = transactions.reduce(
+          (acc: Record<string, number>, trx: Transaction) => {
+            const date = new Date(trx.date).toISOString().split("T")[0];
+            if (!acc[date]) acc[date] = 0;
+            acc[date] += trx.amount;
+            return acc;
+          },
+          {}
+        );
 
-        // Ubah ke format untuk chart: array of { date, total }
-        const formatted = Object.entries(grouped).map(([date, total]) => ({
-          date,
-          total,
-        }));
+        // Format ke tipe ChartPoint[]
+        const formatted: ChartPoint[] = Object.entries(grouped).map(
+          ([date, total]) => ({
+            date,
+            total: Number(total), // 👈 pastikan bertipe number
+          })
+        );
 
-        // Optional: urutkan berdasarkan tanggal
         formatted.sort(
           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
@@ -110,7 +132,6 @@ export default function DashboardPage() {
       const data = await response.json();
       if (response.ok) {
         setTotalCategories(data.data.length);
-        setCategories(data.data);
         console.log("Categories fetched:", data);
       }
     } catch (error) {
@@ -149,7 +170,6 @@ export default function DashboardPage() {
 
   // handle save money
   const handleSaveMoney = async (value: number) => {
-    setMoney(value);
     const response = await fetch("/api/wallets", {
       method: "POST",
       headers: {
@@ -218,11 +238,11 @@ export default function DashboardPage() {
                   title="Total Amount"
                   value={
                     wallets && wallets.length > 0
-                      ? wallets[0].value !== undefined
+                      ? wallets[0].value
                         ? wallets[0].value
-                        : wallets[0].amount !== undefined
+                        : wallets[0].amount
                         ? wallets[0].amount.toLocaleString()
-                        : wallets[0]
+                        : "0"
                       : "0"
                   }
                 >

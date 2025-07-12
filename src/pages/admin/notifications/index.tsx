@@ -1,6 +1,5 @@
 import Head from "next/head";
 import Sidebar from "../../../components/ui/Sidebar";
-import Header from "../../../components/ui/Header";
 import { useEffect, useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { useSession } from "next-auth/react";
@@ -11,7 +10,7 @@ import ShareButtons from "@/components/ui/ShareButton";
 
 export default function DashboardPage() {
   const [notifications, setNotifications] = useState<any[]>([]);
-  const [totalNotification, setTotalNotification] = useState<any[]>([]);
+  // const [totalNotification, setTotalNotification] = useState<any[]>([]);
   const unReadCount = notifications.filter((note) => !note.read).length;
   const { data: session }: any = useSession();
   const [wallets, setTotalWallets] = useState<any[]>([]);
@@ -33,7 +32,6 @@ export default function DashboardPage() {
     const data = await res.json();
     if (res.ok) {
       setNotifications(data.notifications);
-      setTotalNotification(data.notifications.length);
     } else {
       toast.error(data.error || "Failed to fetch notifications");
     }

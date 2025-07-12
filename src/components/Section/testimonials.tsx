@@ -13,13 +13,12 @@ const Testimonials = () => {
     <section className="py-20">
       <div className="container mx-auto px-4 lg:px-6">
         <FadeInSection>
-          {" "}
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Makes Management Convenient
             </h2>
             <p className="text-xl text-slate-300">
-              See what they are saying about Savora{" "}
+              See what they are saying about Savora
             </p>
           </div>
         </FadeInSection>
@@ -37,8 +36,8 @@ const Testimonials = () => {
                   ))}
                 </div>
                 <CardDescription className="text-slate-300 text-base">
-                  "Savora truly changed the way I manage my finances. Now I can
-                  save more!"
+                  &quot;Savora truly changed the way I manage my finances. Now I
+                  can save more!&quot;
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -65,8 +64,8 @@ const Testimonials = () => {
                   ))}
                 </div>
                 <CardDescription className="text-slate-300 text-base">
-                  "The interface is simple but powerful. I can track all my
-                  expenses easily."
+                  &quot;The interface is simple but powerful. I can track all my
+                  expenses easily.&quot;
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -93,8 +92,8 @@ const Testimonials = () => {
                   ))}
                 </div>
                 <CardDescription className="text-slate-300 text-base">
-                  "The budgeting feature is very helpful. Now I never overspend
-                  again."
+                  &quot;The budgeting feature is very helpful. Now I never
+                  overspend again.&quot;
                 </CardDescription>
               </CardHeader>
               <CardContent>

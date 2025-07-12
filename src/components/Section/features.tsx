@@ -1,7 +1,6 @@
 import FadeInSection from "@/Animations/FadeIn";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,

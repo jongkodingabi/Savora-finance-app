@@ -1,6 +1,7 @@
 import { signIn } from "next-auth/react";
 import { Wallet } from "lucide-react";
 import Head from "next/head";
+import Image from "next/image";
 
 const LoginPage = () => {
   return (
@@ -95,10 +96,12 @@ const LoginPage = () => {
           </div>
           {/* Right Side */}
           <div className="hidden lg:flex w-1/2 bg-gradient-to-br from-emerald-400/20 via-cyan-400/10 to-indigo-400/10 items-center justify-center">
-            <img
+            <Image
               src="https://storage.googleapis.com/devitary-image-host.appspot.com/15848031292911696601-undraw_designer_life_w96d.svg"
               alt="Finance Illustration"
               className="w-4/5 max-w-md mx-auto"
+              width={50}
+              height={50}
             />
           </div>
         </div>

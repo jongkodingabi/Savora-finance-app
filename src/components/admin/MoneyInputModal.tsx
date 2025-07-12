@@ -1,10 +1,21 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
 
-export default function MoneyInputModal({ isOpen, onClose, onSave }: any) {
+interface MoneyInputModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (amount: number) => void;
+}
+
+export default function MoneyInputModal({
+  isOpen,
+  onClose,
+  onSave,
+}: MoneyInputModalProps) {
   const [amount, setAmount] = useState("");
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     onSave(Number(amount));
     setAmount("");

@@ -7,9 +7,7 @@ import {
   Pen,
   DollarSign,
   TrendingUp,
-  MoreHorizontal,
   Eye,
-  Edit,
   Trash2,
   BanknoteIcon,
   Wallet,
@@ -83,7 +81,6 @@ type Transaction = {
 
 export default function DashboardPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [money, setMoney] = useState<number | null>(null);
   const [transactions, setTransactions] = useState<any[]>([]); // Adjust type as needed
   const [wallets, setWallets] = useState<any[]>([]);
   const { data: session } = useSession();
@@ -164,7 +161,6 @@ export default function DashboardPage() {
   );
 
   const handleSaveMoney = async (value: number) => {
-    setMoney(value);
     const response = await fetch("/api/wallets", {
       method: "POST",
       headers: {
